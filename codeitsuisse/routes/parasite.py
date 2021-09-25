@@ -139,7 +139,9 @@ def evaluateparasite():
                 pp.put((0, x))
 
             while not pp.empty():
-                (x, y) = pp.get()[1]
+                (a, (x, y)) = pp.get()
+                if -a != current_distance[x][y]:
+                    continue
                 nexts = [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
                 for (p, q) in nexts:
                     if p >= 0 and q >= 0 and p < n and q < m:
