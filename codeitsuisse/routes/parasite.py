@@ -191,8 +191,6 @@ def evaluateparasite():
             p = get_rep(group_p)
             q = get_rep(group_q)
             if p != q:
-                if size[p] > size[q]:
-                    p, q = q, p
                 size[q] += size[p]
                 rep[p] = q
 
@@ -206,12 +204,7 @@ def evaluateparasite():
         return ans
 
     input = json.loads(request.data)
-    logging.info(input)
     answer = list()
-
-    def transform(grid):
-        temp = '\n'.join([','.join([str(x) for x in row]) for row in grid])
-
 
     for testcase in input:
         grid = testcase['grid']
@@ -225,10 +218,9 @@ def evaluateparasite():
             for j in range(m):
                 if grid[i][j] == 3:
                     start = (i, j)
-        first_res = {}
+        first_res = {prev_point[i]: first_solve(start, point, grid) for i, point in enumerate(points)}
         for i, point in enumerate(points):
             first_res[prev_point[i]] = first_solve(start, point, grid)
         output = {"room": room, "p1": first_res, "p2": second_solve(start, grid), "p3": third_solve(start, grid), "p4" : fourth_solve(start, grid)}
         answer.append(output)
-    app.logger.info(answer)
     return json.dumps(answer)
