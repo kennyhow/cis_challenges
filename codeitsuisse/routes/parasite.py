@@ -140,8 +140,6 @@ def evaluateparasite():
 
             while not pp.empty():
                 (a, (x, y)) = pp.get()
-                if -a != current_distance[x][y]:
-                    continue
                 nexts = [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
                 for (p, q) in nexts:
                     if p >= 0 and q >= 0 and p < n and q < m:
@@ -150,11 +148,11 @@ def evaluateparasite():
                         if grid[p][q] in [0, 2]:
                             if cost + 1 < temp:
                                 current_distance[p][q] = cost + 1
-                                pp.put((-current_distance[p][q], (p, q)))
+                                pp.put((current_distance[p][q], (p, q)))
                         else:
                             if cost < current_distance[p][q]:
                                 current_distance[p][q] = cost
-                                pp.put((-current_distance[p][q], (p, q)))
+                                pp.put((current_distance[p][q], (p, q)))
 
             for i in range(n):
                 for j in range(m):
