@@ -16,6 +16,7 @@ def evaluateparasite():
         return tuple(map(int, point))
 
     def first_solve(start, end, grid):
+        n, m = len(grid), len(grid[0])
         points = [start]
         visited = [[False for _ in range(m)] for _ in range(n)]
         visited[start[0]][start[1]] = True
@@ -37,6 +38,7 @@ def evaluateparasite():
             return -1
 
     def second_solve(start, grid):
+        n, m = len(grid), len(grid[0])
         points = [start]
         ans = 0
         count = 0
@@ -62,6 +64,7 @@ def evaluateparasite():
 
         
     def third_solve(start, grid):
+        n, m = len(grid), len(grid[0])
         points = [start]
         ans = 0
         count = 0
@@ -87,7 +90,7 @@ def evaluateparasite():
     
     counter = 0
     def fourth_solve(start, grid):
-
+        n, m = len(grid), len(grid[0])
         # horizontally and vertically, cost in crossing over 0 and 2
 
         global counter
@@ -212,7 +215,6 @@ def evaluateparasite():
 
     for testcase in input:
         grid = testcase['grid']
-        logging.info("input is {}".format(transform(grid)))
         room = testcase['room']
         n, m = len(grid), len(grid[0])
         points = testcase['interestedIndividuals']
@@ -228,6 +230,5 @@ def evaluateparasite():
             first_res[prev_point[i]] = first_solve(start, point, grid)
         output = {"room": room, "p1": first_res, "p2": second_solve(start, grid), "p3": third_solve(start, grid), "p4" : fourth_solve(start, grid)}
         answer.append(output)
-        logging.info("answer is {}".format(output))
     app.logger.info(answer)
     return json.dumps(answer)
