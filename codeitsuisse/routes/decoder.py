@@ -1,5 +1,6 @@
 import logging
 import json
+import random
 
 from flask import request, jsonify
 
@@ -25,6 +26,7 @@ def evaluatedecoder():
             for c in printable:
                 recurse(prefix + c, pos + 1)
     recurse('', 0)
+    results = list()
     for x in possible:
         valid = True
         freq_x = {c: x.count(c) for c in printable}
@@ -50,6 +52,8 @@ def evaluatedecoder():
                 valid = False
                 break
         if valid:
-            return json.dumps({"answer": list(x)})
-    return json.dumps({"answer": possible[0]})
+            results.append(list(x))
+    if len(results) == 0:
+        return json.dumps({"answer": list(random.choice(possible))})
+    return json.dumps({"answer": list(random.choice(results))})
             
