@@ -4,3 +4,4 @@ import codeitsuisse.routes.square
 import codeitsuisse.routes.parasite
 import codeitsuisse.routes.fixedrace
 import codeitsuisse.routes.asteroid
+import codeitsuisse.routes.decoder
