@@ -11,12 +11,10 @@ logger = logging.getLogger(__name__)
 @app.route('/decoder', methods=['POST'])
 def evaluatedecoder():
     temp = request.data
-    logging.info(temp)
     data = json.loads(temp)
     printable = data['possible_values']
     n = data['num_slots']
     values = data['history']
-    logging.info(values)
     
     possible = list()
     def recurse(prefix, pos):
@@ -53,6 +51,7 @@ def evaluatedecoder():
                 break
         if valid:
             results.append(list(x))
+    logging.info(len(results))
     if len(results) == 0:
         return json.dumps({"answer": list(random.choice(possible))})
     return json.dumps({"answer": list(random.choice(results))})
