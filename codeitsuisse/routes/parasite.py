@@ -83,6 +83,108 @@ def evaluateparasite():
             return ans
         else:
             return -1
+    
+    counter = 0
+    def fourth_solve(start, grid):
+        # horizontally and vertically, cost in crossing over 0 and 2
+        global counter
+        origin = [[-1 for _ in range(m)] for _ in range(n)]
+        counter = 0
+        grouped_points = list()
+
+        def process(i, j):
+            global counter
+            current_group = [(i, j)]
+            points = [(i, j)]
+            origin[i][j] = counter
+            while len(points) > 0:
+                next_points = list()
+                for p, q in points:
+                    nexts = [(p - 1, q), (p + 1, q), (p, q - 1), (p, q + 1)]
+                    for x, y in nexts:
+                        if x >= 0 and y >= 0 and x < n and y < m and grid[x][y] in [1, 3] and origin[x][y] == -1:
+                            next_points.append((x, y))
+                            current_group.append((x, y))
+                            origin[x][y] = counter
+                points = next_points[::]
+            counter += 1
+            grouped_points.append(current_group)
+            
+        for i in range(n):
+            for j in range(m):
+                if grid[i][j] in [1, 3] and origin[i][j] == -1:
+                    process(i, j)
+        # there are (counter) groups
+        distance = [[n + m for _ in range(counter)] for _ in range(counter)] # distance between groups
+
+        def process_2(current_origin, points):
+            # determines the minimum distance from any cell in this group to any other cell
+            current_distance = [[n + m for _ in range(m)] for _ in range(n)]
+            for x, y in points:
+                current_distance[x][y] = 0
+            # 0-1 bfs is fine
+            front_queue = points[::]
+            back_queue = list()
+            while len(front_queue) + len(back_queue) > 0:
+                while len(front_queue) > 0:
+                    x, y = front_queue.pop()
+                    nexts = [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
+                    for p, q in nexts:
+                        if p >= 0 and p < n and q >= 0 and q < m:
+                            temp = current_distance[p][q]
+                            cost = current_distance[x][y]
+                            if grid[p][q] in [0, 2]:
+                                # cost is increased
+                                if cost + 1 < current_distance[p][q]:
+                                    current_distance[p][q] = cost + 1
+                                    back_queue.append((p, q))
+                            else:
+                                if cost < current_distance[p][q]:
+                                    current_distance[p][q] = cost
+                                    front_queue.append((p, q))
+                front_queue = back_queue[::]
+                back_queue = list()
+            for i in range(n):
+                for j in range(m):
+                    if origin[i][j] not in [-1, current_origin]:
+                        p = current_origin
+                        q = origin[i][j]
+                        distance[p][q] = min(distance[p][q], current_distance[i][j])
+                        distance[q][p] = min(distance[q][p], current_distance[i][j])
+        
+        for i in range(counter):
+            distance[i][i] = 0
+        for i in range(counter):
+            process_2(i, grouped_points[i])
+        # points now:
+        points = list() # contains {distance, (group_left, group_right)}
+        for i in range(counter):
+            for j in range(i + 1, counter):
+                points.append((distance[i][j], (i, j)))
+        points = sorted(points)
+        rep = [i for i in range(counter)]
+        size = [1 for _ in range(counter)]
+        def get_rep(group):
+            while rep[group] != rep[rep[group]]:
+                rep[group] = get_rep(rep[group])
+            return rep[group]
+        def unite(group_p, group_q):
+            p = get_rep(group_p)
+            q = get_rep(group_q)
+            if p != q:
+                if size[p] > size[q]:
+                    swap(p, q)
+                size[q] += size[p]
+                rep[p] = q
+        ans = 0
+        for i in range(len(points)):
+            dist = points[i][0]
+            p, q = points[i][1]
+            if get_rep(p) != get_rep(q):
+                ans += dist
+                unite(p, q)
+        return ans
+
     input = json.loads(request.data)
     answer = list()
     for testcase in input:
@@ -100,6 +202,6 @@ def evaluateparasite():
         first_res = {}
         for i, point in enumerate(points):
             first_res[prev_point[i]] = first_solve(start, point, grid)
-        output = {"room": room, "p1": first_res, "p2": second_solve(start, grid), "p3": third_solve(start, grid), "p4" : 0}
+        output = {"room": room, "p1": first_res, "p2": second_solve(start, grid), "p3": third_solve(start, grid), "p4" : fourth_solve(start, grid)}
         answer.append(output)
     return json.dumps(answer)
