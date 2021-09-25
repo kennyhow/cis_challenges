@@ -9,7 +9,9 @@ logger = logging.getLogger(__name__)
 
 @app.route('/decoder', methods=['POST'])
 def evaluatedecoder():
-    data = json.loads(request.data)
+    temp = request.data
+    logging.info(temp)
+    data = json.loads(temp)
     printable = data['possible_values']
     n = data['num_slots']
     values = data['history']
