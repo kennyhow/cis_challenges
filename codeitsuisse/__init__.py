@@ -5,3 +5,4 @@ import codeitsuisse.routes.parasite
 import codeitsuisse.routes.fixedrace
 import codeitsuisse.routes.asteroid
 import codeitsuisse.routes.decoder
+import codeitsuisse.routes.stockhunter
