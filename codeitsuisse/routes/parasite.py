@@ -189,7 +189,7 @@ def evaluateparasite():
             q = get_rep(group_q)
             if p != q:
                 if size[p] > size[q]:
-                    swap(p, q)
+                    p, q = q, p
                 size[q] += size[p]
                 rep[p] = q
 
