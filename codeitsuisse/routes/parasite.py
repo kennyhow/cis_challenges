@@ -16,6 +16,8 @@ def evaluateparasite():
         return tuple(map(int, point))
 
     def first_solve(start, end, grid):
+        if start == end:
+            return -1
         n, m = len(grid), len(grid[0])
         points = [start]
         visited = [[False for _ in range(m)] for _ in range(n)]
@@ -39,6 +41,15 @@ def evaluateparasite():
 
     def second_solve(start, grid):
         n, m = len(grid), len(grid[0])
+
+        healthy = 0
+        for i in range(n):
+            for j in range(m):
+                if grid[i][j] == 1:
+                    healthy += 1
+        if healthy == 0:
+            return -1
+
         points = [start]
         ans = 0
         count = 0
