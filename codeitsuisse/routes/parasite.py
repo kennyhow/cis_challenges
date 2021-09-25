@@ -203,6 +203,7 @@ def evaluateparasite():
         return ans
 
     input = json.loads(request.data)
+    logging.info(input)
     answer = list()
     for testcase in input:
         grid = testcase['grid']
