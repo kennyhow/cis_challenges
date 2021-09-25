@@ -46,7 +46,10 @@ def evaluatedecoder():
                 right_count -= change
                 freq[c] -= change
                 freq_old[c] -= change
-            if right_exact == 0 and right_count == 0:
-                return json.dumps({"answer": list(x)})
-    return json.dumps({"answer": "????"})
+            if right_exact != 0 or right_count != 0:
+                valid = False
+                break
+        if valid:
+            return json.dumps({"answer": list(x)})
+    return json.dumps({"answer": possible[0]})
             
