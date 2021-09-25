@@ -11,4 +11,4 @@ logger = logging.getLogger(__name__)
 def evaluatefixedrace():
     s = request.data
     logging.info(s)
-    return json.dumps(s)
+    return s
