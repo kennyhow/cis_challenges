@@ -221,4 +221,5 @@ def evaluateparasite():
             first_res[prev_point[i]] = first_solve(start, point, grid)
         output = {"room": room, "p1": first_res, "p2": second_solve(start, grid), "p3": third_solve(start, grid), "p4" : fourth_solve(start, grid)}
         answer.append(output)
+    app.logger.info(answer)
     return json.dumps(answer)
