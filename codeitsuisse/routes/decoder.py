@@ -51,7 +51,7 @@ def evaluatedecoder():
                 break
         if valid:
             results.append(list(x))
-    logging.info(len(results))
+    app.logger.info("results have length {}".format(len(results)))
     if len(results) == 0:
         return json.dumps({"answer": list(random.choice(possible))})
     return json.dumps({"answer": list(random.choice(results))})
