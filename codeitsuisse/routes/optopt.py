@@ -54,10 +54,10 @@ def evaluatesoptopt():
                         recurse(next_timeline, energy_left, capital_left + price, current_year, next_portfolio, next_path)
                 for next_year in timeline.keys():
                     next_path = deepcopy(current_path)
-                    next_path.append("j-{}-{}".format(current_year, next_year))
+                    if next_year != current_year:
+                        next_path.append("j-{}-{}".format(current_year, next_year))
                     recurse(current_timeline, energy_left - 1, capital_left, next_year, portfolio, next_path)
         recurse(deepcopy(timeline), energy, capital, "2037", list(), list())
-        print("ans at last is {}".format(ans))
         return path
 
     input = json.loads(request.data)
