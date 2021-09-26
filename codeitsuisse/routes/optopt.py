@@ -16,7 +16,7 @@ def evaluatesoptopt():
         timeline = input['timeline']
         ans = 0
         path = list()
-        if energy > 5:
+        if energy > 4:
             return path
         def recurse(current_timeline, energy_left, capital_left, current_year, portfolio, current_path):
             nonlocal ans, path
