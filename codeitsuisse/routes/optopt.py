@@ -1,7 +1,7 @@
 import logging
 import json
 
-from flask import request, jsonify
+from flask import request, jsonify, Response
 from copy import deepcopy
 
 from codeitsuisse import app
@@ -64,5 +64,5 @@ def evaluatesoptopt():
     answer = list()
     for testcase in input:
         answer.append(solve(testcase))
-    logging.info(answer)
-    return json.dumps(answer)
+    logging.info(type(json.dumps(answer)))
+    return Response(json.dumps(answer), mimetype='application/json')
