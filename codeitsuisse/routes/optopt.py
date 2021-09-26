@@ -60,7 +60,7 @@ def evaluatesoptopt():
         recurse(deepcopy(timeline), energy, capital, "2037", list(), list())
         return path
 
-    input = json.loads(request.data)
+    input = eval(request.data)
     answer = list()
     for testcase in input:
         answer.append(solve(testcase))
