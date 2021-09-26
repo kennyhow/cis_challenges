@@ -64,4 +64,5 @@ def evaluatesoptopt():
     answer = list()
     for testcase in input:
         answer.append(solve(testcase))
+    logging.info(answer)
     return json.dumps(answer)
